@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#5e1a55">
+
+<!-- PIXEL DO META: colar aqui o código base do pixel (o checkout já dispara
+     InitiateCheckout, AddPaymentInfo e Purchase quando window.fbq existe). -->
+
+<title>Finalizar pedido — Ponto Delas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/checkout/checkout.css">
+</head>
+<body>
+
+<header class="co-header">
+  <div class="co-wrap co-header-inner">
+    <a href="index.html" class="co-back" id="co-back">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>Voltar</span>
+    </a>
+    <a href="index.html" class="co-logo" aria-label="Ponto Delas — voltar ao produto">
+      <img src="assets/2_Logo.fundo.transparente_270x_2x-209c8b.webp" alt="Ponto Delas" width="135" height="34">
+    </a>
+    <div class="co-secure">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      <span>Compra segura</span>
+    </div>
+  </div>
+</header>
+
+<div class="co-topbar" role="note">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+  <span><strong>Frete grátis</strong> para todo o Brasil · <strong>Leve 2 Pague 1</strong></span>
+</div>
+
+<nav class="co-steps" aria-label="Etapas do pedido">
+  <ol class="co-wrap">
+    <li class="co-step is-current" data-step="1"><span class="co-step-dot">1</span><span class="co-step-label">Dados e entrega</span></li>
+    <li class="co-step" data-step="2"><span class="co-step-dot">2</span><span class="co-step-label">Pagamento</span></li>
+    <li class="co-step" data-step="3"><span class="co-step-dot">3</span><span class="co-step-label">Confirmação</span></li>
+  </ol>
+</nav>
+
+<main class="co-wrap co-layout" id="co-layout">
+
+  <!-- RESUMO DO PEDIDO (no celular fica no topo, com as fotos sempre visíveis) -->
+  <aside class="co-summary" id="co-summary" aria-label="Resumo do pedido">
+    <button type="button" class="co-summary-toggle" id="co-summary-toggle" aria-expanded="false" aria-controls="co-summary-body">
+      <span class="co-summary-toggle-title">
+        <span class="co-mini-thumbs" id="co-mini-thumbs" aria-hidden="true"></span>
+        <span>Resumo do pedido</span>
+        <svg class="co-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+      <strong class="co-summary-toggle-total" id="co-total-mini"></strong>
+    </button>
+
+    <div class="co-kit-strip">
+      <div class="co-kit" id="co-kit"></div>
+    </div>
+
+    <div class="co-summary-body" id="co-summary-body">
+      <div class="co-summary-head">
+        <h2 class="co-summary-title">Seu pedido</h2>
+        <a href="index.html" class="co-link" id="co-edit">Alterar</a>
+      </div>
+
+
+      <div class="co-product">
+        <div class="co-product-info">
+          <span class="co-product-name" id="co-product-name"></span>
+          <span class="co-product-meta" id="co-product-meta"></span>
+        </div>
+        <div class="co-qty" id="co-qty">
+          <button type="button" class="co-qty-btn" data-qty="-1" aria-label="Diminuir quantidade">−</button>
+          <span class="co-qty-val" id="co-qty-val" aria-live="polite">1</span>
+          <button type="button" class="co-qty-btn" data-qty="1" aria-label="Aumentar quantidade">+</button>
+        </div>
+      </div>
+
+      <dl class="co-totals">
+        <div class="co-totals-row"><dt>Subtotal</dt><dd><s class="co-compare" id="co-compare"></s> <span id="co-subtotal"></span></dd></div>
+        <div class="co-totals-row co-totals-save"><dt>Você economiza</dt><dd id="co-save"></dd></div>
+        <div class="co-totals-row"><dt>Frete</dt><dd class="co-free">Grátis</dd></div>
+        <div class="co-totals-row co-totals-final"><dt>Total</dt><dd id="co-total"></dd></div>
+      </dl>
+
+      <ul class="co-assure">
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+          <span id="co-assure-ship"></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span id="co-assure-return"></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Seus dados são usados somente para processar e entregar o pedido.</span>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="co-main" id="co-main">
+
+    <!-- ESTADO VAZIO (acesso direto, sem kit escolhido) -->
+    <div class="co-card co-empty" id="co-empty" hidden>
+      <h1 class="co-h1">Seu pedido está vazio</h1>
+      <p class="co-muted">Escolha o tamanho e as cores das suas capas para continuar.</p>
+      <a href="index.html" class="co-btn co-btn-cta">Escolher minhas capas</a>
+    </div>
+
+    <!-- ETAPA 1: dados + entrega + pagamento -->
+    <form id="co-form" novalidate>
+      <h1 class="co-h1" tabindex="-1" id="co-h1-form">Finalizar pedido</h1>
+      <div class="co-banner" id="co-banner" role="alert" hidden></div>
+
+      <fieldset class="co-card">
+        <legend class="co-card-title"><span class="co-num">1</span> Seus dados</legend>
+        <div class="co-field">
+          <label for="co-name">Nome completo</label>
+          <input id="co-name" name="name" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next">
+          <span class="co-field-msg" aria-live="polite"></span>
+        </div>
+        <div class="co-field">
+          <label for="co-email">E-mail</label>
+          <input id="co-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" placeholder="voce@exemplo.com">
+          <span class="co-field-msg" aria-live="polite"></span>
+        </div>
+        <div class="co-row">
+          <div class="co-field">
+            <label for="co-phone">Celular com DDD</label>
+            <input id="co-phone" name="phone" type="tel" autocomplete="tel-national" inputmode="numeric" enterkeyhint="next" placeholder="(11) 99999-9999">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+          <div class="co-field">
+            <label for="co-cpf">CPF</label>
+            <input id="co-cpf" name="cpf" type="text" autocomplete="off" inputmode="numeric" enterkeyhint="next" placeholder="000.000.000-00">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="co-card">
+        <legend class="co-card-title"><span class="co-num">2</span> Entrega</legend>
+        <div class="co-row co-row-zip">
+          <div class="co-field">
+            <label for="co-zip">CEP</label>
+            <input id="co-zip" name="zip" type="text" autocomplete="postal-code" inputmode="numeric" enterkeyhint="next" placeholder="00000-000">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+          <a class="co-zip-help" href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" rel="noopener noreferrer">Não sei meu CEP</a>
+        </div>
+        <div class="co-row co-row-street">
+          <div class="co-field">
+            <label for="co-street">Rua / Avenida</label>
+            <input id="co-street" name="street" type="text" autocomplete="address-line1" enterkeyhint="next">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+          <div class="co-field">
+            <label for="co-number">Número</label>
+            <input id="co-number" name="number" type="text" autocomplete="off" inputmode="numeric" enterkeyhint="next">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="co-field">
+          <label for="co-complement">Complemento <em>(opcional)</em></label>
+          <input id="co-complement" name="complement" type="text" autocomplete="address-line2" enterkeyhint="next">
+          <span class="co-field-msg" aria-live="polite"></span>
+        </div>
+        <div class="co-field">
+          <label for="co-neighborhood">Bairro</label>
+          <input id="co-neighborhood" name="neighborhood" type="text" autocomplete="off" enterkeyhint="next">
+          <span class="co-field-msg" aria-live="polite"></span>
+        </div>
+        <div class="co-row co-row-city">
+          <div class="co-field">
+            <label for="co-city">Cidade</label>
+            <input id="co-city" name="city" type="text" autocomplete="address-level2" enterkeyhint="next">
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+          <div class="co-field">
+            <label for="co-state">UF</label>
+            <select id="co-state" name="state" autocomplete="address-level1">
+              <option value="">UF</option>
+            </select>
+            <span class="co-field-msg" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="co-ship-option">
+          <span class="co-radio" aria-hidden="true"></span>
+          <div class="co-pay-text">
+            <strong>Frete grátis</strong>
+            <span id="co-ship-note"></span>
+          </div>
+          <span class="co-free">Grátis</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="co-card">
+        <legend class="co-card-title"><span class="co-num">3</span> Pagamento</legend>
+        <div class="co-pay">
+          <span class="co-radio" aria-hidden="true"></span>
+          <div class="co-pay-text">
+            <strong>Pix</strong>
+            <span>Aprovação em instantes, direto pelo app do seu banco</span>
+          </div>
+          <span class="co-pay-tag">Pix</span>
+        </div>
+        <ul class="co-pay-points">
+          <li>O código é gerado na próxima tela.</li>
+          <li>Você paga pelo app do banco, a qualquer hora do dia.</li>
+          <li>O pedido é confirmado assim que o pagamento é identificado.</li>
+        </ul>
+      </fieldset>
+
+      <button type="submit" class="co-btn co-btn-cta" id="co-submit">
+        <svg class="co-btn-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <span id="co-submit-label">Finalizar pedido</span>
+        <span class="co-spinner" aria-hidden="true"></span>
+      </button>
+      <ul class="co-trust-row">
+        <li>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          Pagamento seguro
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          Garantia de 30 dias
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          Devolução grátis
+        </li>
+      </ul>
+      <p class="co-legal">Ao finalizar, você concorda com os <a href="4-termos-e-condicoes-de-uso.html" target="_blank" rel="noopener">Termos de Uso</a> e com a <a href="5-politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+    </form>
+
+    <!-- ETAPA 2: Pix -->
+    <div id="co-pix" hidden>
+      <div class="co-card co-pix-card">
+        <div class="co-pix-head">
+          <h1 class="co-h1" tabindex="-1" id="co-h1-pix">Pague com Pix</h1>
+          <p class="co-pix-amount" id="co-pix-amount"></p>
+          <p class="co-muted" id="co-pix-valid"></p>
+        </div>
+
+        <div class="co-pix-grid">
+          <div class="co-pix-copy">
+            <label class="co-label" for="co-code">Pix copia e cola</label>
+            <div class="co-code-box">
+              <input id="co-code" type="text" readonly>
+            </div>
+            <button type="button" class="co-btn co-btn-cta" id="co-copy">Copiar código Pix</button>
+            <ol class="co-howto">
+              <li>Abra o app do seu banco e escolha <strong>Pix</strong>.</li>
+              <li>Selecione <strong>Pix Copia e Cola</strong> ou leia o QR Code.</li>
+              <li>Confira o valor e confirme o pagamento.</li>
+            </ol>
+          </div>
+          <div class="co-qr-box">
+            <img id="co-qr" alt="QR Code do Pix" width="240" height="240">
+            <p class="co-muted">Ou escaneie com a câmera do app do banco</p>
+          </div>
+        </div>
+
+        <div class="co-wait" id="co-wait" role="status" aria-live="polite">
+          <span class="co-spinner co-spinner-dark" aria-hidden="true"></span>
+          <span id="co-wait-text">Aguardando a confirmação do pagamento…</span>
+        </div>
+        <p class="co-note" id="co-pix-note">Mantenha esta página aberta: a confirmação aparece aqui automaticamente.</p>
+
+        <div class="co-expired" id="co-expired" hidden>
+          <p><strong>Este código Pix expirou.</strong> Nenhum valor foi cobrado. Gere um novo código para continuar.</p>
+          <button type="button" class="co-btn" id="co-new-pix">Gerar novo Pix</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 3: confirmação -->
+    <div id="co-paid" hidden>
+      <div class="co-card co-paid-card">
+        <div class="co-check" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="64" height="64"><circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15 27l8 8 14-16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h1 class="co-h1" tabindex="-1" id="co-h1-paid">Pagamento confirmado</h1>
+        <p class="co-paid-lead" id="co-paid-lead"></p>
+        <dl class="co-paid-info">
+          <div><dt>Código do pedido</dt><dd id="co-paid-code"></dd></div>
+          <div><dt>Total pago</dt><dd id="co-paid-total"></dd></div>
+          <div><dt>Enviaremos os detalhes para</dt><dd id="co-paid-email"></dd></div>
+        </dl>
+        <div class="co-kit co-kit-paid" id="co-paid-kit"></div>
+        <p class="co-paid-desc" id="co-paid-desc"></p>
+        <a href="index.html" class="co-btn">Voltar para a loja</a>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="co-footer">
+  <div class="co-wrap">
+    <nav class="co-footer-links" aria-label="Políticas">
+      <a href="2-politica-de-envio-e-entrega.html">Envio e Entrega</a>
+      <a href="3-politica-de-reembolso-e-devolucoes.html">Reembolso e Devoluções</a>
+      <a href="6-politica-de-cancelamento.html">Cancelamento</a>
+      <a href="4-termos-e-condicoes-de-uso.html">Termos de Uso</a>
+      <a href="5-politica-de-privacidade.html">Privacidade</a>
+    </nav>
+    <p class="co-footer-company">
+      Atendimento: <a href="mailto:suporte@pontodelas.com">suporte@pontodelas.com</a> · seg a sex, 08h às 16h<br>
+      © 2026 Ponto Delas. Todos os direitos reservados.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/checkout/config.js"></script>
+<script src="assets/checkout/checkout.js"></script>
+</body>
+</html>
