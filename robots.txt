@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://capasofa-lp-meta.vercel.app/sitemap.xml

@@ -33,7 +33,7 @@
     window.dataLayer.push(Object.assign({ event: event }, extra || {}));
     var fb = FB_EVENTS[event];
     if (fb && typeof window.fbq === "function") {
-      var data = { currency: "BRL", value: extra && extra.value, content_type: "product", content_ids: ["capa-vicenza"], num_items: order ? order.kit.quantity : 1 };
+      var data = { currency: "BRL", value: extra && extra.value, content_type: "product", content_ids: ["capa-sofa"], num_items: order ? order.kit.quantity : 1 };
       if (event === "purchase" && extra && extra.transaction_id) {
         window.fbq("track", fb, data, { eventID: "purchase-" + extra.transaction_id });
       } else {
@@ -365,7 +365,7 @@
 
   function items() {
     return [{
-      item_id: "capa-vicenza-" + order.kit.size,
+      item_id: "capa-sofa-" + order.kit.size,
       item_name: PRODUCT_NAME,
       item_variant: kitDescription(Object.assign({}, order.kit, { quantity: 1 })),
       price: unitPrice(),

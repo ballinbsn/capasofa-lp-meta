@@ -1053,3 +1053,6 @@ fieldset.co-card > legend + * { clear: both; }
   .co-summary.is-compact .co-mini-thumbs { display: inline-flex; }
   .co-summary.is-compact .co-summary-toggle { padding-bottom: 14px; }
 }
+
+/* logo em texto (Luna Lar) */
+.co-logo { text-decoration: none; }

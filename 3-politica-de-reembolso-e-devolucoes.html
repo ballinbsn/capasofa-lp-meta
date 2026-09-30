@@ -1,4 +1,10 @@
 <!DOCTYPE html><html class="no-js" lang="pt-BR"><head>
+<script>/* variaveis que o tema espera (vinham da loja Shopify). Sem elas, trocar para 4 ou 5 assentos
+   quebrava o script do tema e o pedido ia para o checkout com o tamanho errado.
+   Pix sem desconto (preco_pix = 1); parcelamento no cartao nao e oferecido (a linha fica escondida). */
+window.preco_pix=1;window.preco_boleto=1;window.juros_12x=1;["segunda","terceira","quarta","quinta","sexta","setima","oitava","nona","decima","decima_primeira","decima_segunda"].forEach(function(n){window[n+"_parcela_taxa"]=1});</script>
+<style>.price-list > p{display:none!important}</style>
+<script>/* guarda utm_*, fbclid etc. na chegada (o tema troca a URL por ?variant=... e apagaria esses parâmetros) */(function(){try{var p=new URLSearchParams(location.search),k=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","src","sck","fbclid","gclid","ttclid"],o={},n=0;k.forEach(function(x){if(p.has(x)){o[x]=p.get(x);n++}});if(n)sessionStorage.setItem("pd_tracking",JSON.stringify(o))}catch(e){}})();</script>
 
 
 
@@ -18,7 +24,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#3d3d3d"><title>3. Política de Reembolso e Devoluções – Ponto Delas</title><meta name="description" content="3. Política de Reembolso e Devoluções"><link rel="preload" as="style" href="assets/theme.min-288efc.css">
+    <meta name="theme-color" content="#3d3d3d"><title>3. Política de Reembolso e Devoluções – Luna Lar</title><meta name="description" content="3. Política de Reembolso e Devoluções – Luna Lar"><link rel="preload" as="style" href="assets/theme.min-288efc.css">
 
         
     
@@ -448,7 +454,7 @@ Shopify.country = "BR";
 Shopify.theme = {"name":"theme-export-botacuero-com-theme-export-tienda","id":141311443043,"schema_name":"Tema Sabino Vision","schema_version":"3.0","theme_store_id":null,"role":"main"};
 Shopify.theme.handle = "null";
 Shopify.theme.style = {"id":null,"handle":null};
-Shopify.cdnHost = "pontodelas.com/cdn";
+Shopify.cdnHost = "";
 Shopify.routes = Shopify.routes || {};
 Shopify.routes.root = "/";
 Shopify.shopJsCdnBaseUrl = "https://cdn.shopify.com/shopifycloud/shop-js";
@@ -532,75 +538,20 @@ Shopify.SignInWithShop.User.recognized = false;</script>
 <!-- INICIO DOS BLOQUEADORES -->
   
     
-      <script>
-    window.onload = function () {
-        function AlihunterBlockDM() {
-            var All = document.getElementsByTagName('div');
-            for (var i = 0; i < All.length; i++) {
-                if (All[i].getAttribute('style') && All[i].getAttribute('style').includes('var(--ah-zIndex-backdrop)')) {
-                    All[i - 2].style.display = "none";
-                    return;
-                }
-            }
-        }
-
-        //Tema vision
-        AlihunterBlockDM()
-    }
-</script>
+      
 
     
     
     
-        <script type="text/javascript">
-            var message="Desculpe, o clique com o botão direito foi desativado.";
-            function clickIE() {if (document.all) {(message);return false;}}
-            function clickNS(e) {if
-            (document.layers||(document.getElementById&&!document.all)) {
-                if (e.which==2||e.which==3) {(message);return false;}}}
-            if (document.layers)
-            {document.captureEvents(Event.MOUSEDOWN);document.onmousedown=clickNS;}
-            else{document.onmouseup=clickNS;document.oncontextmenu=clickIE;}
-            document.oncontextmenu=new Function("return false")
-        </script>
+        
     
 
     
-        <script>
-            document.onkeydown = function(e) {
-                if(event.keyCode == 123) {
-                    return false;
-                }
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-                    return false;
-                }
-                if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-                    return false;
-                }
-                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-                    return false;
-                }
-            }
-        </script>
+        
     
 
     
-        <script>
-            function disableselect(e) {
-                return false;
-            }
-
-            function reEnable() {
-                return true;
-            }
-
-            document.onselectstart = new Function("return false");
-
-            if (window.sidebar) {
-                document.onmousedown = disableselect;
-                document.onclick = reEnable;
-            }
-        </script>
+        
         
 
 
@@ -684,7 +635,11 @@ Shopify.SignInWithShop.User.recognized = false;</script>
 <meta name="shopify-y" content="1dfec771-9889-4ed9-b4b9-29f64d7c2e53" data-expiration="1821875669000"><meta name="shopify-s" content="15978586-a17a-4cff-8d12-bfc8df026acc" data-expiration="1790319869000"><meta name="new-cookie-storage-activated" content="t">
 
 
-</head>
+
+<style>/* pagamento só por Pix (o checkout só aceita Pix) */
+#label-type-1,#label-type-3,.modal-parcel-method.card-method,.modal-parcel-method.boleto-method{display:none!important}
+.modal-parcel-method.pix-method{display:block!important}
+</style><link rel="canonical" href="https://capasofa-lp-meta.vercel.app/3-politica-de-reembolso-e-devolucoes.html"><style>.ll-logo{display:block;height:40px;width:auto;max-width:100%}@media(max-width:640px){.ll-logo{height:32px}}.co-logo .ll-logo{height:34px}@media(max-width:420px){.co-logo .ll-logo{height:28px}}</style></head>
 
   <body class="TemaSabinoVision  template-product " data-instant-intensity="viewport"><svg class="visually-hidden">
       <linearGradient id="rating-star-gradient-half">
@@ -815,8 +770,8 @@ p.announcement-bar__content.announcement-bar__content--right.mobhide {
   <header class="header header--inline " role="banner">
     <div class="container">
       <div class="header__inner"><nav class="header__mobile-nav hidden-lap-and-up">
-            </nav><div class="header__logo"><a href="index.html" class="header__logo-link"><span class="visually-hidden">Ponto Delas</span>
-              <img loading="eager" class="header__logo-image" style="max-width: 270px" width="3023" height="522" src="assets/2_Logo.fundo.transparente_270x_2x-209c8b.webp" alt="Logotipo da loja Ponto Delas"></a></div>
+            </nav><div class="header__logo"><a href="index.html" class="header__logo-link"><span class="visually-hidden">Luna Lar</span>
+              <img class="ll-logo" src="assets/luna-lar-logo.webp" alt="Luna Lar" width="697" height="160"></a></div>
         
         
 
@@ -868,19 +823,19 @@ border-radius: var(--search-border) !important;
     <header class="page__header page__header--centered page__header--stack">
       <h1 class="page__title heading h1">3. Política de Reembolso e Devoluções</h1></header><div class="page__content rte">
         <h3>POLÍTICA DE REEMBOLSO E DEVOLUÇÕES</h3>
-<p>A <strong>Ponto Delas</strong> busca proporcionar uma experiência segura e transparente aos seus clientes. Esta política estabelece as condições aplicáveis a cancelamentos, devoluções, trocas e reembolsos.</p>
+<p>A <strong>Luna Lar</strong> busca proporcionar uma experiência segura e transparente aos seus clientes. Esta política estabelece as condições aplicáveis a cancelamentos, devoluções, trocas e reembolsos.</p>
 <h4>1. Devolução grátis em até 7 dias</h4>
 <p>O cliente pode devolver o produto em até <strong>7 dias depois de receber o pedido</strong>. A <strong>devolução é grátis</strong>, sem custo de frete para o cliente, e devolvemos <strong>100% do valor pago</strong>.</p>
-<p>Para solicitar o cancelamento por arrependimento, o cliente deverá entrar em contato com a Ponto Delas pelos canais oficiais de atendimento.</p>
+<p>Para solicitar o cancelamento por arrependimento, o cliente deverá entrar em contato com a Luna Lar pelos canais oficiais de atendimento.</p>
 <p>O produto deverá ser devolvido nas condições exigidas pela legislação aplicável e conforme as orientações fornecidas pela loja.</p>
 <h4>2. Garantia de 30 dias</h4>
 <p>Todas as compras têm <strong>garantia de 30 dias</strong>. Se houver qualquer problema com o produto nesse período, trocamos o produto ou devolvemos o seu dinheiro, de forma simples e segura.</p>
-<p>Para usar a garantia, basta entrar em contato pelo e-mail <strong>suporte@pontodelas.com</strong> informando o número do pedido.</p>
+<p>Para usar a garantia, basta entrar em contato pelo e-mail <strong>suporte@lunalar.com</strong> informando o número do pedido.</p>
 <h4>3. Produto com defeito ou problema</h4>
-<p>Caso o produto apresente defeito ou problema de funcionamento, o cliente deverá entrar em contato com a Ponto Delas informando o número do pedido e, quando solicitado, enviando fotos ou vídeos que permitam a análise da situação.</p>
+<p>Caso o produto apresente defeito ou problema de funcionamento, o cliente deverá entrar em contato com a Luna Lar informando o número do pedido e, quando solicitado, enviando fotos ou vídeos que permitam a análise da situação.</p>
 <p>Após a análise, serão adotadas as medidas cabíveis de acordo com a legislação aplicável e com a natureza do problema apresentado.</p>
 <h4>4. Produto incorreto ou divergente</h4>
-<p>Caso o cliente receba produto diferente daquele adquirido, deverá entrar em contato com a Ponto Delas o quanto antes para que a situação seja analisada e solucionada.</p>
+<p>Caso o cliente receba produto diferente daquele adquirido, deverá entrar em contato com a Luna Lar o quanto antes para que a situação seja analisada e solucionada.</p>
 
 
 
@@ -888,7 +843,7 @@ border-radius: var(--search-border) !important;
 <p>Quando o reembolso for devido, o prazo e a forma de restituição dependerão do meio de pagamento utilizado na compra e das condições aplicáveis ao caso.</p>
 <p>O processamento do reembolso pela loja não significa necessariamente crédito imediato na conta ou cartão do cliente, uma vez que instituições financeiras e intermediadores de pagamento podem possuir prazos próprios.</p>
 <h4>6. Contato</h4>
-<p>Para solicitações relacionadas a cancelamento, devolução, troca ou reembolso, entre em contato pelos canais oficiais de atendimento da Ponto Delas.</p>
+<p>Para solicitações relacionadas a cancelamento, devolução, troca ou reembolso, entre em contato pelos canais oficiais de atendimento da Luna Lar.</p>
       </div></div>
 </section>
 
@@ -925,7 +880,8 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
                         <ul class="footer--links">
                           	<li><i class="fa-solid fa-clock"></i> Atenção: seg a sex de 08 até 16hrs </li>
                           
-                            <li><i class="fa-solid fa-envelope"></i> <span class="highlight-white">suporte@pontodelas.com</span></li>
+                            <li><i class="fa-solid fa-envelope"></i> <span class="highlight-white">suporte@lunalar.com</span></li>
+                            <li><i class="fa-brands fa-whatsapp"></i> <a class="highlight-white" href="https://wa.me/556182416704" target="_blank" rel="noopener" style="color:inherit">WhatsApp (61) 8241-6704</a></li>
                         </ul>
 
               
@@ -950,6 +906,12 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
                               <a href="5-politica-de-privacidade.html" class="footer__link-item link">Política de Privacidade</a>
                             </li><li>
                               <a href="6-politica-de-cancelamento.html" class="footer__link-item link">Política de Cancelamento</a>
+                            </li><li>
+                              <a href="fale-conosco.html" class="footer__link-item link">Fale Conosco</a>
+                            </li><li>
+                              <a href="sobre-a-empresa.html" class="footer__link-item link">Sobre a Empresa</a>
+                            </li><li>
+                              <a href="rastrear-pedido.html" class="footer__link-item link">Rastrear Pedido</a>
                             </li></ul>
                       </div>
                     </div>
@@ -960,15 +922,15 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
               			<div class="payment-box">
 
  
-                          <div class="payment-icon margin-l"><img data-src="assets/VISA_2012-9b1412.svg" width="50" height="25" viewbox="0 0 50 25" class="fluid-i lazyload" alt="Visa"></div>
-                            <div class="payment-icon margin--1"><img data-src="assets/DINNERS_2012-9fe78b.svg" style="max-height: 32px;margin-top: 0.1rem;" width="50" height="25" class="fluid-i lazyload" alt="Dinners"></div>
-                            <div class="payment-icon margin--1"><img data-src="assets/MASTERCARD_2012-1555b1.svg" width="50" height="25" class="fluid-i lazyload" alt="MasterCard"></div>
-                            <div class="payment-icon margin--1"><img data-src="assets/HIPERCARD_2012-13d88b.svg" width="50" height="25" class="fluid-i lazyload" alt="Hipercard"></div>
-                          	<div class="payment-icon margin--1"><img data-src="assets/AURA_2012-d211e5.svg" width="55" height="20" class="fluid-i lazyload" alt="Auracard"></div>
+                          
+                            
+                            
+                            
+                          	
                        
-                            <div class="payment-icon margin-l"><img data-src="assets/ELO_2012-929a3f.svg" width="50" height="25" class="fluid-i lazyload" alt="Elo"></div>
-                            <div class="payment-icon margin--1"><img data-src="assets/AMEX_2012-1a8e46.svg" style="max-height: 32px;margin-top: 0.1rem;" width="50" height="25" class="fluid-i lazyload" alt="American Express"></div>
-                          	<div class="payment-icon margin--1"><img data-src="assets/DISCOVER_2012-190df4.svg" style="min-width: 56px;margin-top: -0.04rem;" width="50" height="25" class="fluid-i lazyload" alt="Discovercard"></div>
+                            
+                            
+                          	
                             
                             <div class="payment-icon margin--1"><img data-src="assets/PIX_2012-0bc612.svg" style="max-height: 34px;margin-top: 0.1rem;" width="50" height="25" class="fluid-i lazyload" alt="Pix"></div>
 
@@ -993,7 +955,7 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
               </div>
             
            </div></div><div class="informacaorodape">
-        <p>Loja Oficial e Registrada<br>
+        <p class="empresa-rodape" style="font-size:12px;line-height:1.5;margin:0 0 6px;opacity:.9">LUNA LAR MÓVEIS &amp; INTERIORES LTDA · CNPJ 67.286.596/0001-09 · Av. Lucena Roriz, S/N, Quadra 58 Lote 99, Jardim do Ingá, Luziânia - GO, CEP 72850-010</p><p>Loja Oficial e Registrada<br>
         © 2026 - Todos os direitos reservados |  </p>
     </div>
       
@@ -1042,5 +1004,6 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
           
 
          
+
 
 </body></html>
