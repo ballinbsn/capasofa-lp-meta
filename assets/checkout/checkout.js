@@ -24,22 +24,12 @@
   var busy = false;
   var lastZip = "";
 
-  /* ---------------- Eventos (GTM/dataLayer + pixel do Meta, se existir) ---------------- */
+  /* ---------------- Eventos (GTM/dataLayer) ---------------- */
 
   window.dataLayer = window.dataLayer || [];
-  var FB_EVENTS = { begin_checkout: "InitiateCheckout", add_payment_info: "AddPaymentInfo", purchase: "Purchase" };
 
   function track(event, extra) {
     window.dataLayer.push(Object.assign({ event: event }, extra || {}));
-    var fb = FB_EVENTS[event];
-    if (fb && typeof window.fbq === "function") {
-      var data = { currency: "BRL", value: extra && extra.value, content_type: "product", content_ids: ["capa-sofa"], num_items: order ? order.kit.quantity : 1 };
-      if (event === "purchase" && extra && extra.transaction_id) {
-        window.fbq("track", fb, data, { eventID: "purchase-" + extra.transaction_id });
-      } else {
-        window.fbq("track", fb, data);
-      }
-    }
   }
 
   function $(id) { return document.getElementById(id); }
