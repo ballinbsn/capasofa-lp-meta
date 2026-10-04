@@ -4,7 +4,8 @@
    Pix sem desconto (preco_pix = 1); parcelamento no cartao nao e oferecido (a linha fica escondida). */
 window.preco_pix=1;window.preco_boleto=1;window.juros_12x=1;["segunda","terceira","quarta","quinta","sexta","setima","oitava","nona","decima","decima_primeira","decima_segunda"].forEach(function(n){window[n+"_parcela_taxa"]=1});</script>
 <style>.price-list > p{display:none!important}</style>
-<script>/* guarda utm_*, fbclid etc. na chegada (o tema troca a URL por ?variant=... e apagaria esses parâmetros) */(function(){try{var p=new URLSearchParams(location.search),k=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","src","sck","fbclid","gclid","ttclid"],o={},n=0;k.forEach(function(x){if(p.has(x)){o[x]=p.get(x);n++}});if(n)sessionStorage.setItem("pd_tracking",JSON.stringify(o))}catch(e){}})();</script>
+<script>/* guarda utm_*, gclid/gbraid/wbraid etc. na chegada (o tema troca a URL por ?variant=... e apagaria esses parâmetros).
+   Fica na sessão e também no localStorage por 90 dias (prazo de atribuição do Google), para não se perder se a aba fechar. */(function(){try{var p=new URLSearchParams(location.search),k=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","src","sck","fbclid","gclid","gbraid","wbraid","ttclid"],o={},n=0;k.forEach(function(x){if(p.has(x)){o[x]=p.get(x);n++}});if(n){var s=JSON.stringify(o);sessionStorage.setItem("pd_tracking",s);try{localStorage.setItem("pd_tracking",JSON.stringify({v:o,t:Date.now()}))}catch(e){}}}catch(e){}})();</script>
 
 
 
@@ -3409,6 +3410,12 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin-right:-
     var params = new URLSearchParams(window.location.search);
     var saved = {};
     try { saved = JSON.parse(sessionStorage.getItem("pd_tracking") || "{}"); } catch (err) {}
+    if (!Object.keys(saved).length) {
+      try {
+        var ls = JSON.parse(localStorage.getItem("pd_tracking") || "null");
+        if (ls && ls.v && Date.now() - ls.t < 90 * 864e5) saved = ls.v;
+      } catch (err) {}
+    }
     Object.keys(saved).forEach(function(k){ if (!params.has(k)) params.set(k, saved[k]); });
     params.delete("variant");
     if (kit) {

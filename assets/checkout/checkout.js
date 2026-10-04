@@ -14,7 +14,8 @@
   var REQUEST_TIMEOUT_MS = 30000;
   var KEY_ORDER = "pd_order";
   var KEY_PIX = "pd_pix";
-  var TRACKED = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "src", "sck", "fbclid", "gclid", "ttclid"];
+  var TRACKED = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "src", "sck", "fbclid", "gclid", "gbraid", "wbraid", "ttclid"];
+  var TRACKING_MAX_AGE = 90 * 864e5; // prazo de atribuição do Google
   var UFS = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
   var order = null; // { kit: {size, color1, color2, quantity}, tracking: {} }
@@ -36,16 +37,36 @@
   function digits(v) { return String(v || "").replace(/\D/g, ""); }
   function brl(v) { return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
 
-  /* ---------------- Armazenamento (pode falhar em modo privado) ---------------- */
+  /* ---------------- Armazenamento (pode falhar em modo privado) ----------------
+     Sessão + localStorage: fechar a aba ou abrir o checkout de novo não perde o Pix nem o pedido. */
 
   function store(key, value) {
-    try { sessionStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* segue sem persistir */ }
+    var v = JSON.stringify(value);
+    try { sessionStorage.setItem(key, v); } catch (e) { /* segue */ }
+    try { localStorage.setItem(key, v); } catch (e) { /* segue */ }
   }
   function load(key) {
-    try { return JSON.parse(sessionStorage.getItem(key)); } catch (e) { return null; }
+    var v = null;
+    try { v = sessionStorage.getItem(key); } catch (e) { /* noop */ }
+    if (!v) { try { v = localStorage.getItem(key); } catch (e) { /* noop */ } }
+    try { return JSON.parse(v); } catch (e) { return null; }
   }
   function drop(key) {
     try { sessionStorage.removeItem(key); } catch (e) { /* noop */ }
+    try { localStorage.removeItem(key); } catch (e) { /* noop */ }
+  }
+
+  /* UTMs e gclid/gbraid/wbraid guardados pela página do produto na chegada do anúncio. */
+  function trackingFromLanding() {
+    try {
+      var s = JSON.parse(sessionStorage.getItem("pd_tracking") || "null");
+      if (s && Object.keys(s).length) return s;
+    } catch (e) { /* noop */ }
+    try {
+      var l = JSON.parse(localStorage.getItem("pd_tracking") || "null");
+      if (l && l.v && Date.now() - l.t < TRACKING_MAX_AGE) return l.v;
+    } catch (e) { /* noop */ }
+    return {};
   }
 
   /* ---------------- Pedido (kit escolhido) ---------------- */
@@ -79,7 +100,8 @@
     if (!kit && saved) kit = normalizeKit(saved.kit);
     if (!kit) return null;
     var tracking = trackingFromUrl();
-    if (!Object.keys(tracking).length && saved && saved.tracking) tracking = saved.tracking;
+    if (!Object.keys(tracking).length && saved && saved.tracking && Object.keys(saved.tracking).length) tracking = saved.tracking;
+    if (!Object.keys(tracking).length) tracking = trackingFromLanding();
     return { kit: kit, tracking: tracking };
   }
 
@@ -453,7 +475,8 @@
   function poll() {
     stopPolling();
     if (!pix) return;
-    if (Date.now() > expiresAt) return markExpired();
+    // Passou do vencimento: confere o status real uma última vez (o Pix pode ter sido pago no fim do prazo).
+    if (Date.now() > expiresAt) return finalCheck();
     var id = pix.transactionId;
 
     fetch(API_URL + "/api/pix/" + encodeURIComponent(id) + "/status")
@@ -466,6 +489,26 @@
       })
       .catch(function () {
         if (pix && pix.transactionId === id) pollTimer = setTimeout(poll, POLL_MS);
+      });
+  }
+
+  function finalCheck() {
+    var id = pix && pix.transactionId;
+    if (!id) return markExpired();
+    fetch(API_URL + "/api/pix/" + encodeURIComponent(id) + "/status")
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!pix || pix.transactionId !== id) return;
+        if (d.status === "paid") return onPaid();
+        if (d.status === "pending") {
+          // ainda pendente logo após o vencimento: mais alguns minutos de tolerância antes de desistir
+          if (Date.now() - expiresAt < 10 * 60 * 1000) { pollTimer = setTimeout(finalCheck, POLL_MS * 2); return; }
+        }
+        markExpired();
+      })
+      .catch(function () {
+        if (pix && pix.transactionId === id && Date.now() - expiresAt < 10 * 60 * 1000) pollTimer = setTimeout(finalCheck, POLL_MS * 2);
+        else markExpired();
       });
   }
 
@@ -590,7 +633,8 @@
       if (!document.hidden && pix) poll();
     });
 
-    if (saved && saved.transactionId && Date.parse(saved.expirationDate) > Date.now()) {
+    if (saved && saved.transactionId) {
+      // Pix já gerado (mesmo vencido): retoma a tela e consulta o status real antes de decidir.
       showPix(saved, true);
     } else {
       drop(KEY_PIX);
